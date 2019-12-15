@@ -30,6 +30,17 @@ public class TextBody {
         this.text = text;
     }
 
+    public TextBody(String text , Integer textSize){
+        this.text = text;
+        this.size = textSize;
+    }
+
+    public TextBody(String text , Integer textSize ,@Nullable AlignEnum align){
+        this.text = text;
+        this.size = textSize;
+        this.align = align;
+    }
+
     public TextBody(String text, @Nullable Integer color, @Nullable Integer size, @Nullable AlignEnum align, @Nullable TextStyle textStyle){
         this.text = text;
         this.color = color;

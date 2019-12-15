@@ -95,10 +95,10 @@ public class DrawImage {
     }
 
     public Bitmap getPaperTextBodyList() {
-        imageBitmap = Bitmap.createBitmap(mPaperWidth, calculatePaperHight(padding.topPadding,padding.bottomPadding), Bitmap.Config.ARGB_8888);
+        imageBitmap = Bitmap.createBitmap(mPaperWidth, calculatePaperHight(padding.topPadding, padding.bottomPadding), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(imageBitmap);
         for (int i = 0; i < arrayList.size(); i++) {
-            PositionXY positionXY = new PositionXY(i,lineSpacing,arrayList.get(i).getSize(),arrayList.get(i).getAlign());
+            PositionXY positionXY = new PositionXY(i + 1, lineSpacing, arrayList.get(i).getSize(), arrayList.get(i).getAlign(), padding);
 
             Paint _p = new Paint();
             _p.setColor(arrayList.get(i).getColor());
@@ -114,22 +114,24 @@ public class DrawImage {
         return imageBitmap;
     }
 
-    public Paint.Align getAlign(TextBody.AlignEnum alignEnum){
-        if(alignEnum == TextBody.AlignEnum.LEFT){
+    private Paint.Align getAlign(TextBody.AlignEnum alignEnum) {
+        if (alignEnum == TextBody.AlignEnum.LEFT) {
             return Paint.Align.LEFT;
-        }else if(alignEnum == TextBody.AlignEnum.CENTER){
+        } else if (alignEnum == TextBody.AlignEnum.CENTER) {
             return Paint.Align.CENTER;
-        }else{
+        } else {
             return Paint.Align.RIGHT;
         }
     }
 
-    public void setLineSpacing(Integer lineSpacing) {
+    public DrawImage setLineSpacing(Integer lineSpacing) {
         this.lineSpacing = lineSpacing;
+        return this;
     }
 
-    public void setPaddingPaper(int topPadding,int leftPadding,int rightPadding,int bottomPadding){
-        padding = new Padding(topPadding,leftPadding,rightPadding,bottomPadding);
+    public DrawImage setPaddingPaper(int topPadding, int leftPadding, int rightPadding, int bottomPadding) {
+        padding = new Padding(topPadding, leftPadding, rightPadding, bottomPadding);
+        return this;
     }
 
     private Integer calculatePaperHight(int topPadding, int bottomPadding) {
@@ -138,6 +140,7 @@ public class DrawImage {
         for (int i = 0; i < arrayList.size(); i++) {
             size = size + arrayList.get(i).getSize() + lineSpacing;
         }
+        size = size + lineSpacing;
         return size;
     }
 
@@ -146,9 +149,20 @@ public class DrawImage {
         private int positionX;
         private int positionY;
 
-        public PositionXY(int lineNumber, int lineSpacing, int textSize, TextBody.AlignEnum alignEnum) {
-            positionX=;
-            positionY=;
+        public PositionXY(int lineNumber, int lineSpacing, int textSize, TextBody.AlignEnum alignEnum, Padding mPadding) {
+            if (alignEnum == TextBody.AlignEnum.CENTER) {
+                positionX = mPaperWidth / 2;
+            } else if (alignEnum == TextBody.AlignEnum.LEFT) {
+                positionX = mPadding.leftPadding;
+            } else {
+                positionX = mPaperWidth - mPadding.rightPadding;
+            }
+
+            if (lineNumber == 1) {
+                positionY = mPadding.topPadding + textSize + lineSpacing;
+            } else {
+                positionY = mPadding.topPadding + ((textSize + lineSpacing) * lineNumber);
+            }
         }
 
         public int getPositionX() {
@@ -160,13 +174,13 @@ public class DrawImage {
         }
     }//
 
-    private class Padding{
+    private class Padding {
         private int topPadding;
         private int leftPadding;
         private int rightPadding;
         private int bottomPadding;
 
-        Padding(int topPadding,int leftPadding,int rightPadding,int bottomPadding){
+        Padding(int topPadding, int leftPadding, int rightPadding, int bottomPadding) {
             this.topPadding = topPadding;
             this.leftPadding = leftPadding;
             this.rightPadding = rightPadding;

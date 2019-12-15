@@ -21,8 +21,6 @@ import com.usdk.apiservice.aidl.printer.UPrinter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UDeviceManager deviceManager;
-    private UPrinter printer;
     private Button button;
     private ImageView imageView;
     private DrawImage drawImage;
@@ -36,29 +34,33 @@ public class MainActivity extends AppCompatActivity {
 
         button = findViewById(R.id.button);
 
+//        drawImage = new DrawImage(this)
+//                .setPaperWidth(400)
+//                .setPaperHeight(400)
+//                .createPaperBitmap()
+//                .createNewPaint(null,null)
+//                .setOnDrawImageSuccess(new DrawImage.OnDrawSuccessListener() {
+//                    @Override
+//                    public void onImage(Bitmap bitmap) {
+//                        imageView.setImageBitmap(bitmap);
+//                    }
+//                });
+
         drawImage = new DrawImage(this)
-                .setPaperWidth(400)
-                .setPaperHeight(400)
-                .createPaperBitmap()
-                .createNewPaint(null,null)
-                .setOnDrawImageSuccess(new DrawImage.OnDrawSuccessListener() {
-                    @Override
-                    public void onImage(Bitmap bitmap) {
-                        imageView.setImageBitmap(bitmap);
-                    }
-                });
-
-
+                .setPaperWidth(600)
+                .setLineSpacing(10)
+                .setPaddingPaper(0,20,20,0);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawImage.clearTextBodyList();
-                drawImage.addTextBody(new TextBody("ชื่อ-นามสกุล"));
-                drawImage.addTextBody(new TextBody("เบอร์โทร"));
-                drawImage.addTextBody(new TextBody("ที่อยู่"));
-                drawImage.addTextBody(new TextBody("โรคประจำตัว"));
-                drawImage
+                drawImage.addTextBody(new TextBody("ชื่อ-นามสกุล",60, TextBody.AlignEnum.LEFT));
+                drawImage.addTextBody(new TextBody("เบอร์โทร",60, TextBody.AlignEnum.LEFT));
+                drawImage.addTextBody(new TextBody("ที่อยู่",60, TextBody.AlignEnum.LEFT));
+                drawImage.addTextBody(new TextBody("โรคประจำตัว",60, TextBody.AlignEnum.LEFT));
+                Bitmap b = drawImage.getPaperTextBodyList();
+                imageView.setImageBitmap(b);
             }
         });
 
@@ -151,13 +153,13 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
-    public UDeviceManager getDeviceManager() throws RemoteException {
-        return deviceManager;
-    }
-
-
-    public DeviceInfo getDeviceInfo() throws RemoteException {
-        return deviceManager.getDeviceInfo();
-    }
+//    public UDeviceManager getDeviceManager() throws RemoteException {
+//        return deviceManager;
+//    }
+//
+//
+//    public DeviceInfo getDeviceInfo() throws RemoteException {
+//        return deviceManager.getDeviceInfo();
+//    }
 
 }
